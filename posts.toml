@@ -1,0 +1,14 @@
+# LEVELS
+# 0: No prior experience/background in the field is required; the target audience is very broad
+# 1: Discerning reader who wants to delve deeper into the L-0 post
+# 2: An audience with the necessary background to understand technical and advanced details
+
+[chsh]
+title = "Play Therapy with Quantum Mechanics"
+date = 2026-06-23
+level = 0
+
+[p-np]
+title = "Is it possible to effectively earn $1 million?"
+date = 2026-07-01
+level = 0
