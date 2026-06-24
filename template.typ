@@ -1,4 +1,5 @@
 #import "tag.typ"
+#import "@preview/cetz:0.5.2"
 
 #let level-zero = rgb("#32a852")
 #let level-one = rgb("#a89332")
@@ -8,7 +9,9 @@
 
 #let note(content) = tag.div(class: "note", content)
 
-#let center(..args, content) = tag.div(..args, class: "center", content)
+#let colored(color, content) = tag.span(style: "color:"+color.to-hex(), class: "colored-text", content)
+
+#let centered(..args, content) = tag.div(..args, class: "center", content)
 
 #let canvas(content, caption: none, ..args) = {
   let fig-label = args.at("label", default: none)
@@ -19,7 +22,7 @@
     ()
   }
 
-  center(
+  centered(
     ..center-args,
     if caption != none [
       #figure(html.frame(cetz.canvas(content)), caption: caption)
@@ -40,7 +43,7 @@
 }
 
 #let spoiler(name, content) = [
-  #center[
+  #centered[
     #tag.details[
       #tag.summary[#name]
 
@@ -54,6 +57,7 @@
   #let title = post.title
   #let date = post.date.display()
   #let level = post.level
+  #let tags = post.tags
   
   #set heading(numbering: "1.1 ~")
   #show ref: it => {
@@ -96,6 +100,9 @@
       it
     }
   }
+  
+  #show figure.caption: set text(fill: white, size: 2em)
+  #set figure(gap: 2em)
 
   #tag.html[
     #tag.head[
@@ -103,10 +110,6 @@
       #tag.meta(http-equiv: "content-type", content: "text/html; charset=UTF-8")
 
       #tag.link(rel: "stylesheet", href: "style.css")
-      #tag.link(rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css")
-
-      #tag.script(defer: "", src: "https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.js")
-      #tag.script(defer: "", src: "https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/contrib/auto-render.min.js")
 
       #tag.title(title)
     ]
@@ -121,6 +124,7 @@
           #tag.div(class: "title")[#title]
           #tag.div(class: "subtitle")[#date]
           #tag.div(class: "level"+str(level), title: level-hover.at(str(level)))[#level-text.at(str(level))]
+          #for t in tags [ #tag.span(class: "tag")[#t] ]
         ]
       ]
 

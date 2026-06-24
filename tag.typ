@@ -1,6 +1,7 @@
 #let __html__ = html
 
 #let html(..args)        = __html__.elem("html", attrs: args.named(), ..args.pos())
+#let p(..args)		 = __html__.elem("p", attrs: args.named(), ..args.pos())
 #let head(..args)        = __html__.elem("head", attrs: args.named(), ..args.pos())
 #let meta(..args)        = __html__.elem("meta", attrs: args.named(), ..args.pos())
 #let link(..args)        = __html__.elem("link", attrs: args.named(), ..args.pos())

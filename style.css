@@ -212,6 +212,8 @@ div.text {
 }
 
 div.text > p {
+  text-align: justify;
+  text-justify: auto;
   margin: 0.8em 0;
 }
 
@@ -339,6 +341,7 @@ div.level0, div.level1, div.level2 {
   padding-top: 2px;
   margin: auto;
   margin-top: 1em;
+  margin-bottom: 1em;
   width: fit-content;
 }
 
@@ -352,4 +355,22 @@ div.level1 {
 
 div.level2 {
   background-color: red;
+}
+
+span.tag {
+  background-color: rgba(159, 140, 168, 0.7);
+  border-color: rgb(64, 0, 89);
+  color: rgba(255, 255, 255, 0.7);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.7em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  display: inline list-item;
+}
+
+span.colored-text {
+  display: initial;
 }

@@ -29,7 +29,7 @@
         #tag.div(class: "text")[
         #for key in posts.keys() [
           #let post = posts.at(key)
-          #template.center[(#post.date.display()) $space$ #link(str(key) + ".html")[#post.title]]
+          #template.centered[(#post.date.display()) $space$ #link(str(key) + ".html")[#post.title]]
           ] 
         ]
       ]
