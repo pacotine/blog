@@ -100,9 +100,6 @@
       it
     }
   }
-  
-  #show figure.caption: set text(fill: white, size: 2em)
-  #set figure(gap: 2em)
 
   #tag.html[
     #tag.head[

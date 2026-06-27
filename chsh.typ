@@ -50,11 +50,10 @@ You need two players and a referee. In scientific literature, it is customary to
 
 The referee begins by flipping a coin and tells Alice the result (_heads_ or _tails_). He does the same with Bob. Alice and Bob have no idea what their teammate's result is. Alice and Bob must then each give an answer to the referee. To simplify things, their possible answers are a _pink card_ or a _green card_, but they can give their answer directly (_deterministic_ answer) or give a random card to the referee (_probabilistic_ answer). Remember that they cannot communicate with each other during the game to agree on their answer, but they can for sure think through a strategy before the game begins to anticipate how they will respond to the referee's question.
 
-#centered(html.frame(scale(50%, figure(diagram(
+#centered(figure(html.frame(diagram(
     node-stroke: 1.3pt + luma(110),
     node-fill: rgb("fafafa"),
     node-inset: 18pt,
-    spacing: (5.5cm, 4.2cm),
 
     // 1. The Referee
     node((1, 0), align(center)[
@@ -117,7 +116,7 @@ label-side: right,
          label-side: center,
           bend: -30deg,
          stroke: (paint: rgb("e53e3e"), dash: "dashed", thickness: 1.4pt))
-  ), caption: [CHSH game interactions.]))))
+  )), caption: [CHSH game interactions.]))
   
 == How do you win?
 - If the referee has given _heads_ for Alice and Bob, they win if they both tell the referee two different card colors ;

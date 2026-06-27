@@ -1,3 +1,5 @@
+/*A big thank you to https://github.com/enricozb/enricozb.github.io and his work, which served as the foundation for my blog in the beginning*/
+
 body {
   display: flex;
   flex-direction: column;
@@ -87,8 +89,13 @@ code {
 }
 
 @media screen and (max-width: 480px) {
+  div.text > div.image {
+    margin: 1rem 0;
+  }
+
   div.header {
     margin: 1rem 0;
+    display: block;
   }
 
   div.header > div.center > div.title {
@@ -100,8 +107,35 @@ code {
   }
 
   div.header > div.nav {
-    font-size: 10pt;
+    font-size: 8pt;
+    height: 100%;
+    margin-bottom: 2em;
+    display: inline-table;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-right-width: 1px;
+    border-right-style: solid;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    border-top-style: none;
+    border-left-style: none;
+    padding-top: 0px;
+    padding-left: 0px;
   }
+  
+  span.tag {
+    font-size: 0.7em;
+    white-space:nowrap;
+  }
+  
+  div.level0, div.level1, div.level2 {
+    font-size: 0.8em;
+  }
+  
+  figcaption {
+    font-size: 8pt;
+  }
+ 
 }
 
 ::selection {
@@ -266,12 +300,6 @@ div.text ul, div.text ol {
   margin-top: 0;
 }
 
-@media screen and (max-width: 480px) {
-  div.text > div.image {
-    margin: 1rem 0;
-  }
-}
-
 div.code {
   background: var(--lightergray);
   font-family: monospace;
@@ -301,9 +329,16 @@ details > summary {
 }
 
 figure {
+  margin: 0;
   flex-direction: column;
   display: flex;
   align-items: center;
+}
+
+figure > svg {
+  max-width: 100%;
+  height: auto;
+  /*TODO: SVG and CSS... https://css-tricks.com/scale-svg/*/
 }
 
 figcaption {
