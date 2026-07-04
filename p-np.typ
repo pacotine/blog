@@ -1,5 +1,6 @@
 #import "template.typ": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import fletcher.shapes: ellipse
 #import "@preview/lilaq:0.6.0" as lq
 
 #show: content => post("p-np",
@@ -71,7 +72,23 @@ No! That's what I sometimes hear from people who aren't familiar with the subjec
 
 For example, imagine that you are solving the problem "Can the objects be sorted from smallest to largest" shown in @algo-min, that is, you are sorting the 5 objects using the algorithm described above. Then verifying the solution to this problem is the same as solving "Are the objects correctly sorted from smallest to largest?", which is indeed a decision problem, and it can be solved in polynomial time (you simply need to examine each element from left to right, stopping when an object is smaller than the previous one): the sorting problem is therefore in #smallcaps[NP]. You'll notice that sorting objects and verifying the solution are both problems solvable in polynomial time; therefore, sorting objects is a problem that belongs to both #smallcaps[P] and #smallcaps[NP]. In fact, the entire class #smallcaps[P] is contained within the class #smallcaps[NP]. Indeed, if it is "simple" to solve a problem, then it is "simple" to verify its solution. This is a long-known result: $"P" subset "NP"$ (#smallcaps[P] is contained in #smallcaps[NP]).
 
-The \$1 million Millennium Prize Problem, thus, seeks to determine whether this is a strict inclusion ($"P" subset.neq "NP"$ or $"NP" subset.not "P"$ which, mathematically, would imply that $"P" != "NP"$) or whether #smallcaps[NP] is also included in #smallcaps[P] (which, mathematically, would imply that $"P" = "NP"$).
+The \$1 million Millennium Prize Problem, thus, seeks to determine whether this is a strict inclusion ($"P" subset.neq "NP"$ or $"NP" subset.not "P"$ which, mathematically, would imply that $"P" != "NP"$) or whether #smallcaps[NP] is also included in #smallcaps[P] (which, mathematically, would imply that $"P" = "NP"$). @p-not-np and @p-is-np visually illustrate the difference in the relationship between the classes depending on whether #smallcaps[P] $=$ #smallcaps[NP] or not.
+
+#figure(html.frame(diagram(
+  node(align(top)[#text(fill: red)[P]], stroke: red, enclose: ((1, 2), (3, 1), <p-text>), shape: ellipse, fill: purple.transparentize(50%), layer: 1, outset: 1.5em, name: <p>),
+  node(align(bottom)[#text(fill: aqua)[NP]], stroke: aqua, enclose: ((4, 0), (0, 4), <p>, <np-text>), shape: ellipse, fill: aqua.transparentize(50%), name:<np>),
+  node(<p.center>, ["easy" to solve _and_ "easy" to verify], layer: 1, name:<p-text>),
+  node(<p.south>, ["easy" to verify _but_\ not necessarily "easy" to solve], name:<np-text>)
+)),
+caption: [Euler diagram illustrating the relationship between P and NP if $"P" != "NP"$.]
+)<p-not-np>
+
+#figure(html.frame(diagram(
+  node(align(top)[#text(fill: red)[P] $=$ #text(fill: aqua)[NP]], stroke: gradient.linear(aqua, purple, red), enclose: ((4, 0), (0, 4), <text>), shape: ellipse, fill: purple.transparentize(50%), name: <p>),
+  node(<p.center>, ["easy" to solve _and_ "easy" to verify], name:<text>)
+)),
+caption: [Euler diagram illustrating the relationship between P and NP if $"P" = "NP"$.]
+)<p-is-np>
 
 = But then, how can we prove that $"P" eq.quest "NP"$?
 
