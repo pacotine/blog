@@ -103,6 +103,7 @@
   }
   
   #show figure: fig => { centered(fig) }
+  #show quote: it => { centered(it) }
 
   #tag.html[
     #tag.head[
