@@ -50,15 +50,26 @@ Okay, now let's imagine we're using the algorithm shown in @algo-min to sort the
 
 #let x = lq.linspace(1, 1000)
 #show: lq.set-legend(position: left+top, fill: black)
-#figure(lq.diagram(
+#figure(caption: [\
+Top: linear complexity vs. quadratic complexity.\
+Bottom: quadratric complexity vs. exponential complexity.])[#html.frame(grid(rows: 2, row-gutter: 1em)[#lq.diagram(
   width: 600pt,
   height: 200pt,
-  xscale: "log",
+  xlim: (100, 1000),
   xlabel: [Number of objects], 
   ylabel: [Number of elementary operations],
-  lq.plot(x, x => x, label: [Linear $f(n) = n$]),
-  lq.plot(x, x => x*x, label: [Quadratric $f(n) = n^2$])
-), caption: [Linear complexity vs. quadratic complexity (logarithmic scale).])<lin-quad>
+  lq.plot(x, x => x, mark:none, label: [Linear $f(n) = n$]),
+  lq.plot(x, x => x*x, mark:none, stroke: yellow, label: [Quadratric $f(n) = n^2$])
+)][#lq.diagram(
+  width: 600pt,
+  height: 200pt,
+  xlim: (1, 50),
+  ylim: (1, 5000),
+  xlabel: [Number of objects], 
+  ylabel: [Number of elementary operations],
+  lq.plot(x, x => x*x, smooth: true, mark:none, stroke: yellow, label: [Quadratric $f(n) = n^2$]),
+  lq.plot(lq.linspace(1, 22), x => calc.pow(2, x), mark:none, stroke: red, label: [Exponential $f(n) = 2^n$])
+)])]<lin-quad>
 
 Linear and quadratic algorithms are considered the most useful in practice, as they allow any computer to process a very large number of input elements without too much difficulty. Conversely, some algorithms have what is known as _exponential_ complexity, meaning that the number of elementary operations grows exponentially with the number of input elements. These kinds of algorithms are terrible in practice because even a hundred input objects will give the world's best computers a hard time#footnote[For an algorithm with a complexity of the order of $2^n$, after 200 objects, we are already in the same order of magnitude as the estimated number of atoms in the observable universe.], and with each additional object, the complexity will only increase drastically.
 
@@ -101,12 +112,13 @@ There are #smallcaps[NP] problems that are so difficult that they become, in a s
 Because of this property, if you can solve an #smallcaps[NP-complete] problem in polynomial time, then that is equivalent to solving all #smallcaps[NP] problems in polynomial time. Using my analogy with Euler diagrams, you can think of this as mapping the edges of the #smallcaps[NP] ellipse to the edges of the #smallcaps[P] ellipse. And yes, if you've been following along so far, then you understand that to prove that $"P" = "NP"$, it is "enough" to solve (find a polynomial-time algorithm for) a single problem: an #smallcaps[NP-complete] problem. Today, we know of more than 3,000 of them. But many are constructed from, or can be reduced to, the most abstract #smallcaps[NP-complete] problem known: the *#smallcaps[3-SAT] problem*.
 
 == What is #smallcaps[3-SAT]?
-This time, the name was chosen more appropriately: the term #smallcaps[SAT] comes from "satisfiability", and the number preceding it specifies the type of #smallcaps[SAT] problem based on the maximum number of variables (in this case, 3). All these words sound pretty complicated, so let me illustrate this problem with a little story (see @sat). Three astronauts, Alice, Bob, and Charlie, are preparing for a long-duration space mission. These three astronauts have items at their disposal that they may or may not take with them into space. NASA allows each of them to specify their own _requirements_ ("I want to take this item with me") and _vetoes_ ("I don't want this item to be taken on board"), but the total number (requirements $+$ vetoes) must not exceed 3, though they can specify fewer. The goal of the problem is as follows: NASA must guarantee each astronaut that at least one of their requests, a requirement or veto, will be satisfied (hence the name). Determining whether such a satisfiability solution exists is a #smallcaps[SAT] problem.
+This time, the name was chosen more appropriately: the term #smallcaps[SAT] comes from "satisfiability", and the number preceding it specifies the type of #smallcaps[SAT] problem based on the maximum number of variables (in this case, 3). All these words sound pretty complicated, so let me illustrate this problem with a little story (see @sat). Four astronauts, Alice, Bob, Charlie and David are preparing for a long-duration space mission. These four astronauts have items at their disposal that they may or may not take with them into space. NASA allows each of them to specify their own _requirements_ ("I want to take this item with me") and _vetoes_ ("I don't want this item to be taken on board"), but the total number (requirements $+$ vetoes) must not exceed 3, though they can specify fewer (hence the #smallcaps[3] in #smallcaps[3-SAT]). The goal of the problem is as follows: NASA must guarantee each astronaut that at least one of their requests, a requirement or veto, will be satisfied (hence the #smallcaps[SAT] in #smallcaps[3-SAT]). Determining whether such a satisfiability solution exists is a #smallcaps[SAT] problem.
 
 #figure(html.frame(diagram(
   node((0, 0), [Alice], fill: gray.transparentize(80%), name: <alice>),
   node((1, 0), [Bob], fill: gray.transparentize(80%), name: <bob>),
   node((2, 0), [Charlie], fill: gray.transparentize(80%), name: <charlie>),
+  node((3, 0), [David], fill: gray.transparentize(80%), name: <david>),
 
   node((0, 1), [#emoji.cat #emoji.trumpet], fill: green.transparentize(60%), shape: octagon, name: <alice-req>),
   node((0, 2), [#emoji.saxophone], fill: red.transparentize(60%), shape: octagon, name: <alice-vet>),
@@ -117,14 +129,20 @@ This time, the name was chosen more appropriately: the term #smallcaps[SAT] come
   node((2, 1), [#emoji.toothbrush #emoji.apple], fill: green.transparentize(60%), shape: octagon, name: <charlie-req>),
   node((2, 2), [#emoji.cat], fill: red.transparentize(60%), shape: octagon, name: <charlie-vet>),
 
+  node((3, 1), [#emoji.chocolate], fill: green.transparentize(60%), shape: octagon, name: <david-req>),
+  node((3, 2), [#emoji.apple], fill: red.transparentize(60%), shape: octagon, name: <david-vet>),
+
   node(fill: aqua.transparentize(50%), enclose: (<alice>, <alice-req>, <alice-vet>), corner-radius: 1em),
   node(fill: aqua.transparentize(50%), enclose: (<bob>, <bob-req>, <bob-vet>), corner-radius: 1em),
-  node(fill: aqua.transparentize(50%), enclose: (<charlie>, <charlie-req>, <charlie-vet>), corner-radius: 1em),
+  node(fill: aqua.transparentize(50%), enclose: (<charlie>, <charlie-req>, <charlie-vet>), 
+  corner-radius: 1em),
+  node(fill: aqua.transparentize(50%), enclose: (<david>, <david-req>, <david-vet>), 
+  corner-radius: 1em),
 
-  node([List of Available Items\ #emoji.apple #emoji.avocado #emoji.basecap #emoji.stethoscope #emoji.cat #emoji.tv #emoji.banana #emoji.saxophone #emoji.trumpet #emoji.wrench #emoji.chocolate #emoji.toothbrush #emoji.syringe], fill: navy, enclose: ((0, 4), (1, 4), (2, 4)), corner-radius: 1em)
+  node([List of Available Items\ #emoji.apple #emoji.avocado #emoji.basecap #emoji.stethoscope #emoji.cat #emoji.tv #emoji.banana #emoji.saxophone #emoji.trumpet #emoji.wrench #emoji.chocolate #emoji.toothbrush #emoji.syringe], fill: navy, enclose: ((0, 4), (1, 4), (2, 4), (3, 4)), corner-radius: 1em)
 
 )),
-caption: [The #smallcaps[3-SAT] problem illustrated by the story of the astronauts. Alice wants to bring her cat and her trumpet, but hates hearing Charlie play the saxophone; Bob absolutely wants to bring bananas for breakfast, but he hates apples and is afraid of syringes; Charlie absolutely wants apples for breakfast and his toothbrush, but he is allergic to cats. At least one of their respective constraints must be met by NASA for everyone to be satisfied.]
+caption: [The #smallcaps[3-SAT] problem illustrated by the story of the astronauts. Alice wants to bring her cat and her trumpet, but hates hearing Charlie play the saxophone; Bob absolutely wants to bring bananas for breakfast, but he hates apples and is afraid of syringes; Charlie absolutely wants apples for breakfast and his toothbrush, but he is allergic to cats; David can't live without chocolate, but he hates apples.\ At least one of their respective constraints must be met by NASA for everyone to be satisfied.]
 )<sat>
 
 Since this problem is #smallcaps[NP-complete], it is by definition #smallcaps[NP], and therefore verifying a solution must be "simple". Indeed, in the example shown in @sat, if NASA provides the list of objects selected for the trip, verifying whether it satisfies each astronaut's constraints can be done in polynomial time. So the million-dollar question is: is this problem in P? Meaning, is it equally "easy" to solve? Or, in other words, is there a polynomial-time algorithm that solves this problem?
@@ -137,7 +155,7 @@ I have to be honest: yes. In any case, researchers aren't trying to solve this p
 The sad truth is that we will probably never know. I'd like to quote my professor of _Complexity Theory & Cryptography_, who made a lasting impression on me when he said #quote[I will probably never see a solution to P vs. NP, nor will my children... or my grandchildren...]
 
 = Can I ask a question?
-#spoiler([I feel like the problem in @sat is simple; I figured it out in just a few minutes. Why isn't this problem included in P?], [I illustrated #smallcaps[SAT] using a small example with only three participants. But it's important to remember that in complexity theory, as discussed in @complexity, complexity isn't measured by the time it takes to solve a problem, and certainly not based on such a small example. #smallcaps[3-SAT] is an exponential problem, meaning that the best algorithm to date for solving it has exponential complexity depending on the number of participants ($n$) in my analogy in @sat. With $n = 3$, as in my example, the complexity isn't noticeable in practice; it's only when you start adding more and more participants that the complexity skyrockets.])
+#spoiler([I feel like the problem in @sat is simple; I figured it out in just a few minutes. Why isn't this problem included in P?], [I illustrated #smallcaps[SAT] using a small example with only four participants. But it's important to remember that in complexity theory, as discussed in @complexity, complexity isn't measured by the time it takes to solve a problem, and certainly not based on such a small example. #smallcaps[3-SAT] is an exponential problem, meaning that the best algorithm to date for solving it has exponential complexity depending on the number of participants ($n$) in my analogy in @sat. With $n = 4$, as in my example, the complexity isn't noticeable in practice; it's only when you start adding more and more participants that the complexity skyrockets (see the lower diagram in @lin-quad to better visualize this explosion in complexity as a function of input size).])
 
 #spoiler("What are the mathematical foundations needed to understand P vs. NP in more detail?", [In a #colored(level-one.lighten(50%))[Level-1 post], I would introduce the reader to: deterministic and nondeterministic Turing machines to provide the true formal definition of complexity classes; Landau notation $cal(O)(.)$, which better describes complexity than words alone; and Boolean logic, including disjunctions and conjunctions, to formally describe #smallcaps[SAT].])
 
