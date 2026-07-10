@@ -1,4 +1,4 @@
-#import "template.typ": *
+#import "../template.typ": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
 #let card(color) = box(fill: color, width: 14pt, height: 20pt, radius: 2pt, stroke: 0.5pt + luma(100), baseline: 25%)

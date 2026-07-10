@@ -1,4 +1,4 @@
-#import "template.typ": *
+#import "/template.typ": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import fletcher.shapes: ellipse, octagon
 #import "@preview/lilaq:0.6.0" as lq

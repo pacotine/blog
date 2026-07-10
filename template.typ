@@ -110,7 +110,7 @@
       #tag.meta(name: "viewport", content: "width=device-width, initial-scale=1")
       #tag.meta(http-equiv: "content-type", content: "text/html; charset=UTF-8")
 
-      #tag.link(rel: "stylesheet", href: "style.css")
+      #tag.link(rel: "stylesheet", href: "../style.css")
 
       #tag.title(title)
     ]
@@ -118,8 +118,8 @@
     #tag.body[
       #tag.div(class: "header")[
         #tag.div(class: "nav left")[
-          #tag.div[#link("index.html")[Home]]
-          #tag.div[#link("about-me.html")[About me]]
+          #tag.div[#link("../index.html")[Home]]
+          #tag.div[#link("../about-me.html")[About me]]
         ]
         #tag.div(class: "center")[
           #tag.div(class: "title")[#title]

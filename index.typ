@@ -29,7 +29,8 @@
         #tag.div(class: "text")[
         #for key in posts.keys() [
           #let post = posts.at(key)
-          #template.centered[(#post.date.display()) $space$ #link(str(key) + ".html")[#post.title]]
+          #let file-name = str(key)
+          #template.centered[(#post.date.display()) $space$ #link(file-name + "/" + file-name + ".html")[#post.title]]
           ] 
         ]
       ]
