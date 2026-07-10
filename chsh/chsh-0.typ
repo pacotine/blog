@@ -1,4 +1,4 @@
-#import "../template.typ": *
+#import "/template.typ": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
 #let card(color) = box(fill: color, width: 14pt, height: 20pt, radius: 2pt, stroke: 0.5pt + luma(100), baseline: 25%)
@@ -16,7 +16,7 @@
 #let heads-coin = coin("H", gradient.linear(rgb("f8fafc"), rgb("94a3b8"), angle: 45deg)) // Silver
 #let tails-coin = coin("T", gradient.linear(rgb("fef08a"), rgb("d97706"), angle: 45deg)) // Gold
 
-#show: content => post("chsh",
+#show: content => post("chsh", 0,
 [
 
 I know what you're thinking: "Quantum physics and games, seriously?". If you don't believe me if I tell you that the game I'm going to introduce to you today will be fun... well, fair enough. However, I guarantee you'll find this a fascinating read, of a game that is essential to understanding the fundamental properties of quantum mechanics. Don't worry, since this post is #colored(level-zero.lighten(50%))[intended for a non-expert audience], I'll try to keep the math to a minimum while still preserving the magic of the concepts behind it. Other posts on this same topic will go into greater depth, whether for curious readers who #colored(level-one.lighten(50%))[already have a basic understanding of quantum physics] or #colored(level-two.lighten(50%))[for experts in the field] who want to understand each equation in detail.

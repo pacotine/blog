@@ -3,7 +3,7 @@
 #import fletcher.shapes: ellipse, octagon
 #import "@preview/lilaq:0.6.0" as lq
 
-#show: content => post("p-np",
+#show: content => post("p-np", 0,
 [
 
 In 2000, the #link("https://www.claymath.org/millennium-problems/")[Clay Mathematics Institute] selected seven open problems and offered a \$1 million reward to anyone who could provide a correct solution to one of them. Among these problems of paramount importance in science, known as the *Millennium Problems*, one stands out for its complexity, its apparent simplicity given the statement of the problem, and its potential impact if it were to be solved. Today I'd like to introduce you to the most iconic open problem in mathematics and computer science: the *P vs. NP* problem. How do we define what is effective and what is not? How do we solve a problem effectively? Does a problem that is simple to solve always have a solution that is simple to verify? What if the opposite were true? Are you ready to delve into the fascinating world of complexity theory through what is surely the most important mathematical problem of the millennium? Just a friendly reminder: don't worry, this is a #colored(level-zero.lighten(50%))[Level-0 post], so I'll try to use as little math as possible, even though that will be a challenge here.

@@ -30,7 +30,14 @@
         #for key in posts.keys() [
           #let post = posts.at(key)
           #let file-name = str(key)
-          #template.centered[(#post.date.display()) $space$ #link(file-name + "/" + file-name + ".html")[#post.title]]
+          #let title = post.title
+          #let tags = post.tags
+          #template.centered[*\~ #title \~*]
+          #for entry-key in post.entry.keys() [
+            #let entry = post.entry.at(entry-key)
+            #let post-link = file-name + "/" + file-name + "-" + str(entry.level) + ".html"
+            #template.centered[$gt.arc space$ (#entry.date.display()) $space$ #html.frame(square(fill: template.level-color.at(str(entry.level)), size: 0.5em)) $space$ #link(post-link)[Level-#entry.level]]
+            ]
           ] 
         ]
       ]

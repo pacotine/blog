@@ -5,12 +5,17 @@
 
 [chsh]
 title = "Play Therapy with Quantum Mechanics"
+tags = ["quantum physics", "game theory"]
+[chsh.entry.0]
 date = 2026-06-29
 level = 0
-tags = ["quantum physics", "game theory"]
+[chsh.entry.1]
+date = 2026-07-30
+level = 1
 
 [p-np]
 title = "Is it possible to effectively earn $1 million?"
+tags = ["mathematics", "complexity theory"]
+[p-np.entry.0]
 date = 2026-07-01
 level = 0
-tags = ["mathematics", "complexity theory"]

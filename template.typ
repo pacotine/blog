@@ -6,6 +6,7 @@
 #let level-zero = rgb("#32a852")
 #let level-one = rgb("#a89332")
 #let level-two = rgb("#a84032")
+#let level-color = ("0": level-zero, "1": level-one, "2": level-two)
 #let level-text = ("0": "General audience", "1": "Informed audience", "2": "Experienced audience")
 #let level-hover = ("0": "No prior experience/background in the field is required; the target audience is very broad", "1": "Discerning reader who wants to delve deeper into the Level-0 post", "2": "An audience with the necessary background to understand technical and advanced details")
 
@@ -54,11 +55,10 @@
   ]
 ]
 
-#let post(key, content) = [
+#let post(key, level, content) = [
   #let post = toml("posts.toml").at(key)
   #let title = post.title
-  #let date = post.date.display()
-  #let level = post.level
+  #let date = post.entry.at(str(level)).date.display()
   #let tags = post.tags
   
   #set heading(numbering: "1.1 ~")
