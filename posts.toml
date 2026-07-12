@@ -10,7 +10,7 @@ tags = ["quantum physics", "game theory"]
 date = 2026-06-29
 level = 0
 [chsh.entry.1]
-date = 2026-07-30
+date = 2026-09-01
 level = 1
 
 [p-np]
@@ -19,3 +19,10 @@ tags = ["mathematics", "complexity theory"]
 [p-np.entry.0]
 date = 2026-07-01
 level = 0
+
+[cat-state]
+title = "The Smallest Cat in the Universe"
+tags = ["quantum physics", "quantum information"]
+[cat-state.entry.2]
+date = 2026-07-20
+level = 2
