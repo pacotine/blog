@@ -3,6 +3,12 @@
 #import "tag.typ"
 #import "@preview/cetz:0.5.2"
 
+#let ip(x, y) = [$chevron.l #x, #y chevron.r$] //inner product
+#let ket(x) = [$lr(|#x chevron.r)$] //ket
+#let bra(x) = [$lr(chevron.l #x|)$] //bra
+#let bracket(x, y) = [$lr(chevron.l #x|#y chevron.r)$] //inner product in the Dirac notation
+#let expec(o) = [$chevron.l #o chevron.r$] //expectation value
+
 #let level-zero = rgb("#32a852")
 #let level-one = rgb("#a89332")
 #let level-two = rgb("#a84032")

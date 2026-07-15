@@ -22,7 +22,7 @@ level = 0
 
 [cat-state]
 title = "The Smallest Cat in the Universe"
-tags = ["quantum physics", "quantum information"]
+tags = ["quantum physics", "quantum information", "QEC"]
 [cat-state.entry.2]
 date = 2026-07-20
 level = 2
