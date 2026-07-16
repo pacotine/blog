@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><pre><code data-lang="python"><span style="color: #d73948">from</span> matplotlib <span style="color: #d73948">import</span> transforms
+<span style="color: #d73948">import</span> matplotlib.pyplot <span style="color: #d73948">as</span> plt
+<span style="color: #d73948">import</span> numpy <span style="color: #d73948">as</span> np
+<span style="color: #d73948">from</span> qutip <span style="color: #d73948">import</span> coherent, wigner, plot_wigner
+
+<span style="color: #d73948">def</span> <span style="color: #4b69c6">plot_wigner_2d_3d</span>(psi):
+    fig <span style="color: #d73948">=</span> plt.<span style="color: #4b69c6">figure</span>(figsize<span style="color: #d73948">=</span>(<span style="color: #b60157">20</span>, <span style="color: #b60157">8</span>))
+    
+    ax <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_subplot</span>(<span style="color: #b60157">1</span>, <span style="color: #b60157">2</span>, <span style="color: #b60157">1</span>)
+    <span style="color: #4b69c6">plot_wigner</span>(psi, fig<span style="color: #d73948">=</span>fig, ax<span style="color: #d73948">=</span>ax)
+
+    ax <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_subplot</span>(<span style="color: #b60157">1</span>, <span style="color: #b60157">2</span>, <span style="color: #b60157">2</span>, projection<span style="color: #d73948">=</span><span style="color: #198810">'</span><span style="color: #198810">3d</span><span style="color: #198810">'</span>)
+    <span style="color: #4b69c6">plot_wigner</span>(psi, fig<span style="color: #d73948">=</span>fig, ax<span style="color: #d73948">=</span>ax, projection<span style="color: #d73948">=</span><span style="color: #198810">'</span><span style="color: #198810">3d</span><span style="color: #198810">'</span>, colorbar<span style="color: #d73948">=</span><span style="color: #d73948">True</span>)
+     
+<span style="color: #d73948">def</span> <span style="color: #4b69c6">plot_wigner_3d</span>(psi, alpha_max):
+    fig <span style="color: #d73948">=</span> plt.<span style="color: #4b69c6">figure</span>(figsize<span style="color: #d73948">=</span>(<span style="color: #b60157">9</span>,<span style="color: #b60157">9</span>))
+
+    widths <span style="color: #d73948">=</span> [<span style="color: #b60157">6</span>,<span style="color: #b60157">3</span>]
+    heights <span style="color: #d73948">=</span> [<span style="color: #b60157">6</span>,<span style="color: #b60157">3</span>]
+    spec <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_gridspec</span>(ncols<span style="color: #d73948">=</span><span style="color: #b60157">2</span>, nrows<span style="color: #d73948">=</span><span style="color: #b60157">2</span>, width_ratios<span style="color: #d73948">=</span>widths, height_ratios<span style="color: #d73948">=</span>heights)
+
+    x <span style="color: #d73948">=</span> np.<span style="color: #4b69c6">linspace</span>(<span style="color: #d73948">-</span>alpha_max,alpha_max,<span style="color: #b60157">200</span>)
+    wig <span style="color: #d73948">=</span> <span style="color: #4b69c6">wigner</span>(psi, x, x)
+    psi_x <span style="color: #d73948">=</span> np.<span style="color: #4b69c6">sum</span>(wig, axis<span style="color: #d73948">=</span><span style="color: #b60157">0</span>)
+    psi_p <span style="color: #d73948">=</span> np.<span style="color: #4b69c6">sum</span>(wig, axis<span style="color: #d73948">=</span><span style="color: #b60157">1</span>)
+
+    ax <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_subplot</span>(spec[<span style="color: #b60157">0</span>,<span style="color: #b60157">0</span>], projection<span style="color: #d73948">=</span><span style="color: #198810">'</span><span style="color: #198810">3d</span><span style="color: #198810">'</span>)
+    <span style="color: #4b69c6">plot_wigner</span>(psi, fig<span style="color: #d73948">=</span>fig, ax<span style="color: #d73948">=</span>ax, projection<span style="color: #d73948">=</span><span style="color: #198810">'</span><span style="color: #198810">3d</span><span style="color: #198810">'</span>)
+    
+    ax <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_subplot</span>(spec[<span style="color: #b60157">0</span>,<span style="color: #b60157">1</span>])
+    base <span style="color: #d73948">=</span> plt.<span style="color: #4b69c6">gca</span>().transData
+    rot <span style="color: #d73948">=</span> transforms.<span style="color: #4b69c6">Affine2D</span>().<span style="color: #4b69c6">rotate_deg</span>(<span style="color: #b60157">90</span>)
+    ax.<span style="color: #4b69c6">plot</span>(x,<span style="color: #d73948">-</span>psi_p, transform <span style="color: #d73948">=</span> rot<span style="color: #d73948">+</span>base)
+    ax.<span style="color: #4b69c6">set_xticks</span>([])
+    ax.<span style="color: #4b69c6">set_ylim</span>(<span style="color: #d73948">-</span>alpha_max,alpha_max)
+    
+    ax <span style="color: #d73948">=</span> fig.<span style="color: #4b69c6">add_subplot</span>(spec[<span style="color: #b60157">1</span>,<span style="color: #b60157">0</span>])
+    ax.<span style="color: #4b69c6">plot</span>(x, psi_x)
+    ax.<span style="color: #4b69c6">set_yticks</span>([])
+    ax.<span style="color: #4b69c6">set_xlim</span>(<span style="color: #d73948">-</span>alpha_max, alpha_max)
+    
+N <span style="color: #d73948">=</span> <span style="color: #b60157">30</span>
+alpha <span style="color: #d73948">=</span> <span style="color: #4b69c6">coherent</span>(N, <span style="color: #b60157">2</span><span style="color: #b60157">.</span><span style="color: #b60157">0</span>)
+<span style="color: #4b69c6">plot_wigner_3d</span>(alpha, alpha_max<span style="color: #d73948">=</span><span style="color: #b60157">7</span>)
+m_alpha <span style="color: #d73948">=</span> <span style="color: #4b69c6">coherent</span>(N, <span style="color: #d73948">-</span><span style="color: #b60157">2</span><span style="color: #b60157">.</span><span style="color: #b60157">0</span>)
+<span style="color: #4b69c6">plot_wigner_3d</span>(m_alpha, alpha_max<span style="color: #d73948">=</span><span style="color: #b60157">7</span>)
+cat_plus <span style="color: #d73948">=</span> (alpha <span style="color: #d73948">+</span> m_alpha)<span style="color: #d73948">/</span>(np.<span style="color: #4b69c6">sqrt</span>(<span style="color: #b60157">2</span><span style="color: #d73948">*</span>(<span style="color: #b60157">1</span><span style="color: #d73948">+</span>np.<span style="color: #4b69c6">exp</span>(<span style="color: #d73948">-</span><span style="color: #b60157">2</span><span style="color: #d73948">*</span><span style="color: #b60157">2</span><span style="color: #b60157">.</span><span style="color: #b60157">0</span><span style="color: #d73948">*</span><span style="color: #b60157">2</span><span style="color: #b60157">.</span><span style="color: #b60157">0</span>))))
+<span style="color: #4b69c6">plot_wigner_2d_3d</span>(cat_plus)
+
+plt.<span style="color: #4b69c6">show</span>()</code></pre></body></html>
