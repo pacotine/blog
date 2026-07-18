@@ -1,6 +1,7 @@
 #import "/template.typ": *
 #import "@preview/cetz:0.4.2": angle, canvas, draw
 #import draw: circle, content, line
+#import "@preview/quill:0.7.3": *
 
 #let cat_plus = $ket(cal(C)_alpha^+)$ //cat state +
 #let cat_minus = $ket(cal(C)_alpha^-)$ //cat state -
@@ -47,7 +48,7 @@
   $ ket(-alpha) = e^(-1/2abs(-alpha)^2)sum_(n=0)^oo (-alpha)^n/sqrt(n!)ket(n) $ <coherent_2>
   where $alpha in RR$ is the _coherent amplitude_. These states are not orthogonal, since $bracket(alpha, -alpha) = e^(-2 alpha^2)$, hence they cannot be distinguished. However, when $alpha$ increases, $e^(-2 alpha^2)$ decreases exponentially so that $ket(alpha)$ and $ket(-alpha)$ can be discriminated with a probability of failure that approaches zero exponentially with $alpha$. For this reason, we say that $ket(alpha)$ and $ket(-alpha)$ are _quasi-orthogonal_, for $alpha$ large enough.
 
-  Now, if we sum these two states, we obtain a superposition of two macroscopically distinct states. This image might remind you of something: *Schrödinger's cat* thought experiment. Thus, the superposition $ ket(alpha) + ket(-alpha) $ is, up to normalization, called a *cat state*. Since $ ket(alpha) + ket(-alpha) prop 2e^(-1/2abs(alpha)^2)(alpha^0/sqrt(0!)ket(0)+alpha^2/sqrt(2!)ket(2)+dots+alpha^(2k)/sqrt(2k!)ket(2k))"," $ i.e. it contains only even Fock states, we say that it is an _even cat state_. Equivalently, since $ ket(alpha) - ket(-alpha) prop 2e^(-1/2abs(alpha)^2)(alpha^1/sqrt(1!)ket(1)+alpha^3/sqrt(3!)ket(3)+dots+alpha^(2k+1)/sqrt((2k+1)!)ket(2k+1))"," $ i.e. it contains only odd Fock states, we say that it is an _odd cat state_.
+  Now, if we sum these two states, we obtain a superposition of two macroscopically#footnote[Not strictly "macroscopically", but these quantum states display an almost-classical behavior. That's why we consider the system as a superposition of two very distinct macroscopic states, just as with the Schrödinger's cat.] distinct states. This image might remind you of something: *Schrödinger's cat* thought experiment. Thus, the superposition $ ket(alpha) + ket(-alpha) $ is, up to normalization, called a *cat state*. Since $ ket(alpha) + ket(-alpha) prop 2e^(-1/2abs(alpha)^2)(alpha^0/sqrt(0!)ket(0)+alpha^2/sqrt(2!)ket(2)+dots+alpha^(2k)/sqrt(2k!)ket(2k))"," $ i.e. it contains only even Fock states, we say that it is an _even cat state_. Equivalently, since $ ket(alpha) - ket(-alpha) prop 2e^(-1/2abs(alpha)^2)(alpha^1/sqrt(1!)ket(1)+alpha^3/sqrt(3!)ket(3)+dots+alpha^(2k+1)/sqrt((2k+1)!)ket(2k+1))"," $ i.e. it contains only odd Fock states, we say that it is an _odd cat state_.
 
   We thus denote the normalized even and odd cat states as follows: $ #cat_plus = 1/sqrt(2(1+e^(-2abs(alpha)^2)))(ket(alpha)+ket(-alpha))"," $ <cat_plus>\
   
@@ -105,6 +106,61 @@
 
   This is, of course, a simplifed model. In practice, you need to model the full physical device that generates the effective two-photon dissipation. If you're interested, you can check out the innovative and pioneering work of Alice&Bob#footnote[Alice&Bob is a French startup and a pioneer in quantum computers that use cat qubits. I relied heavily on #link("https://alice-bob.com/publications/")[their publications] when writing this post, as well as for my master's project, which focused on their technology.], where they use two bosonic modes: the storage mode that stores the cat qubit, and the _buffer_ mode intentionally very lossy. One of their #link("https://arxiv.org/abs/2302.06639")[significant experimental findings] showed that for each added photon in the cat-qubit state, the bit-flip time is multiplied by $4.2$, which is an exponential bit-flip error suppression.
 
+  = How are cat qubits a game-changer in QEC?
+  Achieving universal fault tolerance traditionally requires a code capable of handling both bit-flip and phase-flip errors simultaneously. That's why _surface codes_ currently represent the industry standard for large-scale and fault-tolerant quantum computation architectures. These are two-dimensional topological quantum error-correcting codes, meaning physical qubits are arranged in a 2D checkerboard lattice. Conventional computers, on the other hand, require only a single dimension of error correction. Correcting both types of quantum errors at the same time is therefore quite difficult. 
+  
+  Fortunately, as we've seen, by using such cat codes, we effectively eliminate one of the two types of errors (bit-flips). All that remains is to correct the second type of error, phase-flips. This effectively amounts to 1D error correction, just like with classical computers, which is much simpler and yields much more efficient results!
+
+  == So what about phase-flips?
+  Since bit-flips are insignificant in this architecture, the only issue with a significant probability of occurring is the switch between the #cat_plus and #cat_minus, namely the even and odd cat states. When we increase the number of photons to reduce the number of bit-flips, we also increase the risk of losing one, and thus of causing a phase-flip. Indeed, losing a photon from an even cat state makes it odd, and losing one from an odd cat state makes it even.
+
+  Is this a snake biting its own tail (or, in this case, a cat)? Not really, because this risk increases linearly with the number of photons added. Reducing the number of bit-flips exponentially versus increasing the number of phase-flips linearly remains a more than acceptable trade-off! And we know how to correct a single type of error that occurs with a linear probability. For example, we can use _repetition codes_, which are used by conventional computers.
+
+  == But how does repetition codes work with quantum states?
+  Good question. You just redundantly encode a *logical qubit* into several *physical qubits* so local errors can be detected and corrected without directly measuring the logical quantum information. Let me explain it with an example.
+
+  Imagine that you want to encode the qubit $ ket(psi) = alpha ket(0) + beta ket(1)"." $
+  Then, a repetition code simply involves encoding it as a _logical state_ $ ket(psi)_L = alpha ket(000) + beta ket(111)"." $
+
+  @encode-log-bit shows the circuit used to encode the logical qubit.
+
+  #figure(html.frame(
+    align(horizon+center)[
+    #quantum-circuit(
+      fill: black,
+      wire: 0.7pt+white,
+      lstick($alpha ket(0) + beta ket(1)$), 1, ctrl(1), ctrl(2), 3, rstick($alpha ket(000) + beta ket(111)$, n: 3), [\ ],
+      lstick($ket(0)$), 1, targ(), 1, [\ ],
+      lstick($ket(0)$), 2, targ()
+    )]
+  ), caption: [Bit-flip encoding circuit.])<encode-log-bit>
+
+  Now, if you want to identify a bit-flip error, this can be done through _syndrome measurements_ using ancillary qubits. Instead of measuring the encoded state directly, parity measurements reveal which qubit has been corrupted while preserving the amplitudes $alpha$ and $beta$ (see @syn).
+
+  #figure(html.frame(table(
+      columns: 3,
+      stroke: none,
+      align: center + horizon,
+      table.vline(x: 1, stroke: white),
+      table.vline(x: 2, stroke: white),
+      text(fill: white)[State], text(fill: white)[Syndrome], text(fill: white)[Correction],
+      table.hline(stroke: white),
+      $alpha ket(000) + beta ket(111)$, [$00$], $bb(1) times.o bb(1) times.o bb(1)$,
+      $alpha ket(100) + beta ket(011)$, [$10$], $X times.o bb(1) times.o bb(1)$,
+      $alpha ket(010) + beta ket(101)$, [$11$], $bb(1) times.o X times.o bb(1)$,
+      $alpha ket(001) + beta ket(110)$, [$01$], $bb(1) times.o bb(1) times.o X$
+  )), caption: [Syndrome measurement error correction table.])<syn>
+
+  A syndrome measure means that you determine the parity of each term in the expression. For example, $000$ is even, so it will yield $0$; $010$ is odd, so it will yield $1$; $110$ is even#footnote[There is an even number of $1"s"$. We can also calculate the binary sum, or addition modulo 2, which is $1 plus.o 1 plus.o 0 = 0$.], so it will yield $0$, and so on. Do this for both the $alpha$ and $beta$ terms, and refer to @syn, which provides a table of the gates to apply based on the result obtained.
+  If you get $00$, you will apply $bb(1) times.o bb(1) times.o bb(1)$; if you get $10$, you will apply $X times.o bb(1) times.o bb(1)$; etc.
+
+  This way, you correct bit-flip errors. But wait a minute! We said that with cat qubits, bit-flips weren't really our problem anymore and that we needed to worry about phase-flips instead. And you're right. Repetition codes can also be used to correct phase-flips instead of bit-flips. The repetition code in @encode-log-bit can be adapted to phase-flip errors by applying Hadamard gates $H$ before and after the encoding circuit. In this rotated basis, phase errors become effective bit-flip errors and can therefore be corrected using the same repetition principle, and the same syndrome measurement described in @syn. This gives us our simple repetition-correcting code for phase-flip errors, designed for our cat qubits that are already protected against bit-flips.
+
+  == Can we make it even more efficient?
+  Yes! Cat qubits truly have interesting properties for error correction. Repetition codes are certainly interesting, but imagine if we could use this dimensionality reduction to do things that would be impossible without this property of cat qubits. This is what recent research has been focusing on, particularly the researchers at Alice&Bob. LDPC (Low-Density Parity-Check) codes, used notably in flash storage technologies, have found a use in quantum computing. While using these codes normally requires a 3D architecture, using cat qubits reduces this to just 2D. The researchers were thus able to design a 2D LDPC architecture requiring five times fewer logical qubits than their previous error-correcting codes. As a result, Shor's famous algorithm could be implemented on a 2048-bit RSA key using just... 100,000 cat qubits. This is 200 times fewer than other traditional approaches#footnote[Read this very #link("https://alice-bob.com/wp-content/uploads/2024/12/Think-Inside-The-Box-Alice-Bob-Whitepaper.pdf")[informative white paper from Alice&Bob] on their technology, which, by the way, is aimed at a slightly broader audience than my highly technical post.]!
+
+  This is only the beginning: from a theoretical standpoint, but even more so from a practical one. Mastering a cat qubit in the lab and making the technology scalable enough to be useful requires a great deal of talent and effort. Only time will tell if these tiny cats, the smallest you'll ever encounter, will enable humanity to solve complex problems, as promised by everyone in the quantum sector.
+
   = Can I ask a question? <ciaq>
   #spoiler([How to compute the Wigner function plotted in @plot_cat?], [
   I aim to provide the calculations involved in the construction of the Wigner function of a coherent state $ket(alpha)$ and the Wigner function of a superposition of coherent state, namely a cat state.
@@ -130,6 +186,31 @@
   $ W_"cat" (beta) = (2N^2)/pi (e^(-2abs(beta - alpha)^2) + e^(-2abs(beta + alpha)^2) + e^(-2 abs(beta)^2)cos(4Im(beta alpha^*)-phi)). $ <wigner_cat>
 
   Notice also that for an even cat state or an odd cat state, defined in @cat, $alpha in RR$ and $phi=0$ or $phi=pi$ which simplifies the equation above and clearly shows two Gaussian packets separated in $x$ and oscillatory fringes along $p$.
+  ])
 
+  #spoiler("Are these cat states easy to produce in practice?", [
+    Not really... In practice, production of cat states with a large mean photon number $abs(alpha)^2$ is difficult. States restricted to small values of $alpha$ are referred to as _kitten_ states. How cute!\
+    These states are useful, since their small#footnote[Typically, in the literature, it's about $abs(alpha) < 1$.] amplitude $alpha$ can be amplified to transform them into bigger cat states. Moreover, they are "easy"#footnote[You "just need" to pass some photons through a beam splitter of high transmittivity so that they can be split from the initial field.] to produce, since they can be well approximated through photon subtraction from a squeezed vacuum state. This is a way to produce bigger cat states, and that is the topic discussed in this section.
+
+    Photon subtraction is the process of removing a single photon from a light field. Following the same approach as in the question about the Wigner function (with the displacement operator), we introduce a unitary operator acting on the vacuum state $ket(0)$, called the _squeeze operator_ $S(zeta)$. When the squeezing operator is applied directly to the vacuum state, $ ket(zeta) = S(zeta)ket(0), $<squeezed_vacuum> rather than to a coherent state $ket(alpha)$, the resulting state $ket(zeta)$ is called the _squeezed vacuum_ state, where $zeta in CC$, i.e. $zeta=r e^(i phi)$. Let this $ket(zeta)$ be the initial state that is split into two modes on a beam splitter and vacuum on the other input port, i.e. $ ket(psi_"init") = ket(zeta)_1 times.o ket(0)_2, $<init> such that mode $1$ is the _signal_ mode (the photon transmitted mode) and mode $2$ is the _trigger_ mode (the photon reflected mode). It is known that, if a photon number detector in the trigger mode records $M$ photons, then the resulting state transmitted in the signal mode will be a squeezed vacuum state with $M$ photons subtracted. In the Fock basis, we have that $ ket(zeta)_1 = 1/sqrt(cosh(r))sum_(n=0)^(infinity)sqrt(n!)/(n\/2)! ((e^(i phi)tanh(r))/2)^(n/2) (1+(-1)^(n+m))/2 ket(n)_1 $<fock_squeezed> where $r in RR$ is the magnitude of $zeta$. A beam splitter operator $B(eta)$ of transmittance $eta$ transforms $ket(n) times.o ket(0)$ into $ B(eta) ket(n) times.o ket(0) = sum_(k=0)^n sqrt(binom(n, k)eta^k (1-eta)^(n-k)) space.third ket(k) times.o ket(n-k). $<beam_splitter>
+    
+    Using these equations above, our initial state is thus transformed after the beam splitter into the output state $ ket(psi_"out") = sum_(n,m=0)^infinity bracket(n+m, zeta)_1 sqrt(binom(n+m, n)eta^n (1-eta)^m) space.third ket(n)_1 times.o ket(m)_2. $
+
+    In this form, it is clear that if the photon detector in the trigger mode gets $M$ photons, then the state is projected onto $ket(M)bra(M)$, whereas the signal mode collapses into the photon-subtracted state $ ket(psi_M) = N sum_(n=0)^infinity bracket(n", "M, psi_"out") ket(n)_1 $ <photon_subtracted> of normalization factor $N = 1/sqrt(Pr_2(M))$ such that $Pr_2(M)$ is the probability of detecting $M$ photons in the trigger mode (mode $2$), given by $ Pr(M) = sum_(n=0)^infinity abs(bracket(n", "M, psi_"out"))^2. $
+
+    From this, we notice that when an even number of photons detected in the trigger mode, the signal mode will consist of a superposition of only even Fock states, which reminds us of the definition of an even cat state (see @cat). In the same way, an odd number of photons detected will give a state similar to an odd cat state. It is possible to decompose the state $ket(psi_M)$ and to compute the Wigner functions of the resulting states of an even or odd photons detected number, and then showing how we can produce, using this technique, a cat state of weak amplitude, namely a _kitten_ state.
+  ])
+
+  #spoiler("You said that cat states are fragile because of noise. What is their decoherence?", [
+    The larger $alpha$ is, the more fragile a cat state becomes. Since cat states are produced during an optical experiment, the primary source of decoherence is photon absorption. Absorption is the process by which the energy of a photon ($E = h nu$ according to Planck relation for some photon frequency $nu$) is absorbed by another particle, such as an electron. This operation destroys the photon, which destroys the quantum information if it is encoded in cat states.
+
+    If the initial state of the cat system is $ #cat_plus _1 times.o ket(0)_2 $ where the labels $1$ and $2$ represent the optical modes of the system, and if these two modes pass through a beam splitter of transmissivity $eta$, then the state of the system becomes $ ket(psi) = cal(N) (ket(-alpha sqrt(eta))_1 times.o ket(-alpha sqrt(1 - eta))_2 + ket(alpha sqrt(eta))_1 times.o ket(alpha sqrt(1 - eta))_2) $ where $cal(N)$ is the normalization factor. As we can see, mode $2$ (which contained the vacuum before entering the beam splitter) is lost to the environment. Let $ rho prop ket(psi)bra(psi) $ be the density matrix of the two-mode system. Indeed, mode $1$ is given by the partial trace $ tr_2(rho) &prop tr_2[ket(-alpha sqrt(eta))_1 times.o ket(-alpha sqrt(1 - eta))_2 bra(-alpha sqrt(eta))_1 times.o bra(-alpha sqrt(1 - eta))_2 +\ &ket(-alpha sqrt(eta))_1 times.o ket(-alpha sqrt(1 - eta))_2 bra(alpha sqrt(eta))_1 times.o bra(alpha sqrt(1 - eta))_2 +\ &ket(alpha sqrt(eta))_1 times.o ket(alpha sqrt(1 - eta))_2 bra(alpha sqrt(eta))_1 times.o bra(alpha sqrt(1 - eta))_2 +\ &ket(alpha sqrt(eta))_1 times.o ket(alpha sqrt(1 - eta))_2  bra(-alpha sqrt(eta))_1 times.o bra(-alpha sqrt(1 - eta))_2]\ &= (ket(-alpha sqrt(eta)) + ket(alpha sqrt(eta)))(bra(-alpha sqrt(eta)) + bra(alpha sqrt(eta))) $ and we recognize $ ket(cal(C_(alpha sqrt(eta))^+)) = ket(-alpha sqrt(eta)) + ket(alpha sqrt(eta)) $ which is a cat state of amplitude $alpha sqrt(eta)$. This shows how photon absorption affects a cat state by decreasing the amplitude of its coherent state. Using the full and normalized definition of $rho$, one can calculate the fidelity as a function of $alpha$ and $eta$ between an initial even cat state and the resulting mode $1$ state $tr_2(rho)$:
+    $ F_+(alpha, eta) = (1 - 1/2 N(alpha sqrt(eta))/N(alpha)(1-e^(-2alpha^2(1 - eta))))(4e^(-alpha^2(1+eta)))/(N(alpha)N(alpha sqrt(eta)))(e^(alpha^2sqrt(eta)) + e^(-alpha^2sqrt(eta)))^2 $<fid>
+    where $N(x) = 2+2e^(-2x^2)$. This function gives quick drops to $1/2$ as $eta$ decreases from $1$, and for a large $alpha$, even a small decrease in $eta$ causes a significant drop in fidelity. For instance, with#footnote[$alpha = 10$ gives a mean photon number of $abs(alpha)^2 = 100$.] $alpha = 10$ and a transmissivity of 99%, fidelity drops directly to 56%. Of course, all these results are similar if we use odd cat states.
+
+  ])
+
+  #spoiler("What are your sources for this post?", [
+    I spent six months working on this topic for my master's degree; #link("bibliography.bib")[here is the bibliography] for my project report. It will provide you with useful resources to help you understand, explore further, and even verify some of my calculations.
   ])
 ])
