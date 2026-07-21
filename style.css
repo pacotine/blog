@@ -342,6 +342,11 @@ figure > svg {
   /*TODO: SVG and CSS... https://css-tricks.com/scale-svg/*/
 }
 
+figure[role="math"] > svg {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
 figcaption {
   margin-top: 2em;
   font-style: italic;
