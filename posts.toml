@@ -26,3 +26,10 @@ tags = ["quantum physics", "quantum information", "QEC"]
 [cat-state.entry.2]
 date = 2026-07-20
 level = 2
+
+[collatz]
+title = "No one can solve this child's play problem"
+tags = ["mathematics", "number theory"]
+[collatz.entry.0]
+date = 2026-08-01
+level = 0
