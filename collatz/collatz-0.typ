@@ -132,4 +132,19 @@ There are only three possible solutions to this problem:
   lq.plot(x, y, mark:"d", stroke: yellow+2pt, label: [Collatz sequence for a special number])
 )]<collatz-diverge>
 
+As you have seen from several examples, it seems that Hypothesis 1 in @collatz-421, where any starting number converges to the $4-2-1$ cycle, is the best one. In 1937, Lothar Collatz was the first to notice this strange property and many mathematicians quickly began to conjecture that every sequence converges to this $4-2-1$ cycle, regardless of the positive starting number. The *Collatz conjecture* was born. As I write this blog post, the problem remains unsolved, and no one has yet succeeded in proving that the conjecture is true.
+
+= So, how could we solve this problem?
+The good thing about conjectures is that there are only two possible outcomes: either it turns out to be true, or it is false. To refute a conjecture like this would mean finding a counterexample. Indeed, all it takes is a single number that does not satisfy the conjectured statement, and the conjecture would be refuted. Such a number would diverge (as in @collatz-diverge) or result in a cycle other than $4-2-1$ (as in @collatz-other-cycle).
+
+== How can we find this counterexample?
+Unfortunately, there is no known effective method other than testing all numbers until one is found that does not follow the $4-2-1$ pattern. As you can imagine, mathematicians didn't give up, and they asked their computer science colleagues to write a program capable of testing the Collatz conjecture on a large number of inputs. To be exact, they checked up to $2^71$. Just think about how big that number is: it's a 2 followed by 21 zeros. And guess what? They all converged on the $4-2-1$ cycle.
+
+Does this prove that the Collatz conjecture is true, since there doesn't seem to be any counterexample? Absolutely not. In mathematics, showing that something is true for "quite a few" cases is certainly not enough. Even if a vast number of integers converge to the $4-2-1$ cycle, this is far from covering all integers, and the proof still remains to be shown. Refuting a conjecture requires only a single counterexample, but proving it true requires a rigorous and general proof. That doesn't mean, however, that these results are useless. For example, it gives an idea of the order of magnitude of a cycle other than $4-2-1$. Indeed, if the cycle were small (as in the illustrative example in @collatz-other-cycle), then one of the tested numbers would have converged to that other cycle. Thus, so far, we know that if any repeating cycle other than the 3-step $4-2-1$  cycle exists, then it must contain at least 355,504,839,929 steps. It means that if there is a completely different cycle out there somewhere in the infinite universe of numbers that never touches the number 1, 4 or 2, then it cannot be a simple 3-step, 10-step, or even a million-step cycle.
+
+That leaves the counterexamples that rely on divergence (see @collatz-diverge). Finding a sequence that will never converge to a cycle seems even less likely. One argument supporting this is linked to a probabilistic heuristic of average decay. I won't go into the details here, but the key point to remember is that the scientific community considers the existence of such a sequence to be extremely unlikely, although, once again, this does not constitute absolute proof of its nonexistence.
+
+== In that case, how can we prove that the conjecture is true?
+
+
 ])
