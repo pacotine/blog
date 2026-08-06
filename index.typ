@@ -35,8 +35,10 @@
           #template.centered[*\~ #title \~*]
           #for entry-key in post.entry.keys() [
             #let entry = post.entry.at(entry-key)
+            #let date = entry.at("date", default: none)
+            #let date-string = if date == none { "not published yet" } else { date.display() }
             #let post-link = file-name + "/" + file-name + "-" + str(entry.level) + ".html"
-            #template.centered[$gt.arc space$ (#entry.date.display()) $space$ #html.frame(square(fill: template.level-color.at(str(entry.level)), size: 0.5em)) $space$ #link(post-link)[Level-#entry.level]]
+            #template.centered[$gt.arc space$ (#date-string) $space$ #html.frame(square(fill: template.level-color.at(str(entry.level)), size: 0.5em)) $space$ #link(post-link)[Level-#entry.level]]
             ]
           ] 
         ]

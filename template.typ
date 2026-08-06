@@ -64,7 +64,8 @@
 #let post(key, level, content) = [
   #let post = toml("posts.toml").at(key)
   #let title = post.title
-  #let date = post.entry.at(str(level)).date.display()
+  #let date = post.entry.at(str(level)).at("date", default: none)
+  #let date-string = if date == none { "not published yet" } else { date.display() }
   #let tags = post.tags
   
   #set heading(numbering: "1.1 ~")
@@ -129,7 +130,7 @@
         ]
         #tag.div(class: "center")[
           #tag.div(class: "title")[#title]
-          #tag.div(class: "subtitle")[#date]
+          #tag.div(class: "subtitle")[#date-string]
           #tag.div(class: "level"+str(level), title: level-hover.at(str(level)))[#level-text.at(str(level))]
           #for t in tags [ #tag.span(class: "tag")[#t] ]
         ]
