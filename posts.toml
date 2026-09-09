@@ -30,4 +30,5 @@ level = 2
 title = "No one can solve this child's play problem"
 tags = ["mathematics", "number theory"]
 [collatz.entry.0]
+date = 2026-09-09
 level = 0
