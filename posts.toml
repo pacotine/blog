@@ -32,3 +32,9 @@ tags = ["mathematics", "number theory"]
 [collatz.entry.0]
 date = 2026-09-09
 level = 0
+
+[game-of-life]
+title = "The Game of Life"
+tags = ["mathematics", "automata theory"]
+[game-of-life.entry.0]
+level = 0
