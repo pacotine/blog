@@ -8,7 +8,7 @@
 
   = Game? Life?
   == A game without a player?
-  Conway was an avid player. He loved games, but also appreciated their relevance to mathematics education. He enjoyed spending time playing Go and Backgammon with his colleagues during tea time (yes, he was English) in the common rooms at the University of Cambridge. In the 1970s, Conway became interested in *cellular automata*. Think of them as an abstractly formalized sandbox studied through the lens of mathematics: a grid of "cells" that change their state (_alive_ or _dead_, _black_ or _white_, _1_ or _0_, etc.) step by step based on simple rules and the states of neighboring cells. Once you set the initial state, a cellular automaton runs on "its own" since each cell updates from one generation to the next based only on its current state, its neighbors' states and the fixed rule set. The player makes no decisions#footnote[If it plays with a piece of paper and a pen, for example, it only changes the state of the game by systematically applying the predefined rules; therefore, it does not act like a sentient player, but like a machine that executes.], and can neither win nor lose. For this reason, it is said to be a *zero-player game*, i.e. a simulation game that does not require a player. 
+  Conway was an avid player. He loved games, but also appreciated their relevance to mathematics education. He enjoyed spending time playing Go and Backgammon with his colleagues during tea time (yes, he was British) in the common rooms at the University of Cambridge. In the 1970s, Conway became interested in *cellular automata*. Think of them as an abstractly formalized sandbox studied through the lens of mathematics: a grid of "cells" that change their state (_alive_ or _dead_, _black_ or _white_, _1_ or _0_, etc.) step by step based on simple rules and the states of neighboring cells. Once you set the initial state, a cellular automaton runs on "its own" since each cell updates from one generation to the next based only on its current state, its neighbors' states and the fixed rule set. The player makes no decisions#footnote[If it plays with a piece of paper and a pen, for example, it only changes the state of the game by systematically applying the predefined rules; therefore, it does not act like a sentient player, but like a machine that executes.], and can neither win nor lose. For this reason, it is said to be a *zero-player game*, i.e. a simulation game that does not require a player. 
   
   What particularly interested Conway was how minimal and predetermined rules could give rise to complex behaviors. He spent months testing rule variations until he found the simplest rules that allow the emergence of life-like behavior. It's important to remember that in the 1970s, computer simulations were not common, so Conway and his colleagues tested their rules by manually simulating the game's states on a Go board. A good choice for a two-state (alive or dead) 2D grid: each square on the board represented a cell, and the piece placed on it represented the cell's state (for example, white for _alive_ and black for _dead_), and each cell depended on the state of its eight neighboring cells.
 
@@ -41,10 +41,20 @@
   #figure(caption: [The _glider_, a type of spaceship.],
   image("gen-gif/glider.gif", width: 50%, height: 50%))<glider>
 
+  Cute, isn't it? But there's a whole range of spaceships out there: here's a more complex one in @lobster.
+
+  #figure(caption: [The _lobster_ (an obvious name), a "faster" and "bigger" spaceship than the glider.],
+  image("gen-gif/lobster.gif", width: 50%, height: 50%))<lobster>
+
   Some patterns are significantly more complex because they can grow or produce smaller structures. These are then classified into categories such as *guns* or *breeders*.
 
+  #figure(caption: [The _Gosper glider gun_, a type of gun#footnote[This is the very first gun ever discovered (the oldest structure capable of generating spaceships ever found).], i.e. a structure emitting spaceships periodically (here, in red, you can see the formation of gliders).], image("gen-gif/gun.gif", width: 50%, height: 50%))<gun>
+
+  When he published _The Game of Life_, Conway offered \$50 to anyone who could find a seed capable of growing indefinitely. It took Bill Gosper, a mathematician at MIT, only a few weeks to discover this 36-cell structure that acts as a periodic glider factory (see @gun). Gosper's discovery had a significant scientific impact, as he had just refuted Conway's conjecture: Conway himself did not believe that such simple rules could lead to *infinite growth*; and its evidence had just opened the door to a whole new realm of possibilities.
+
   = How far can this go?
+  If there are structures capable of reproducing gliders, is it possible to construct structures capable of producing Gosper glider guns, each of which will produce gliders? Is it then possible to construct structures that produce these Gosper glider gun structures? And so on?
   == Self-replicating machines?
-  
+  Since some structures are capable of acting as true factories for other complex structures, why couldn't there be a structure capable of producing a copy of itself?
 
 ])
